@@ -107,6 +107,11 @@ namespace FastedBimap
         {
             return imgBmp;
         }
+        public static explicit operator Bitmap (FastBitmap fastBitmap)
+        {
+            return fastBitmap.imgBmp;
+        }
+
 
         /// <summary>
         /// class for save color and position in byte
