@@ -16,6 +16,7 @@ namespace FastedBimap
         private ColorInMemory[,] pixelsArray;
 
 
+
         public FastBitmap(Bitmap img)
         {
             imgBmp = img;
@@ -38,7 +39,28 @@ namespace FastedBimap
 
         private ColorInMemory[,] getPixelArrayFromBmp(Bitmap img)
         {
+            PixelFormat pixelFormat = img.PixelFormat;
+            int bytePerPixel;
+
             ColorInMemory[,] colorArray = new ColorInMemory[Height, Width];
+
+            switch (pixelFormat)
+            {                
+                case PixelFormat.Format24bppRgb:
+                    {
+                        bytePerPixel = 3;
+                        break;
+                    }
+                case PixelFormat.Format32bppArgb:
+                    {
+                        bytePerPixel = 4;
+                        break;
+                    }
+                default:
+                    {
+                        throw new ApplicationException("Sorry, this pixelFormat don't support");                       
+                    }
+            }
 
             //Lock the bitmap's bits
             BitmapData imgData = img.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadOnly, img.PixelFormat);
@@ -52,19 +74,29 @@ namespace FastedBimap
                because stride rounds to 4 bit
             */
             int correctStride = 0;
-            int byteStringLenght = Width * 3;
+            int byteStringLenght = Width * bytePerPixel;
             int byteCount = 0;
-            if (imgData.Stride != Width * 3)
+            if (imgData.Stride != Width * bytePerPixel)
             {
-                correctStride = imgData.Stride - Width * 3;
+                correctStride = imgData.Stride - Width * bytePerPixel;
             }
             int x = 0, y = 0;
-            for (int i = 0; i < bytesLenght - 2; i += 3)
+            for (int i = 0; i <= bytesLenght - bytePerPixel; i += bytePerPixel)
             {
+                int alphaChanel;
+                if (bytePerPixel==4)
+                {
+                    alphaChanel = rgbValues[i + 3];
+                }
+                else
+                {
+                    alphaChanel = 255;
+                }
+                
 
-                Color color = Color.FromArgb(255, rgbValues[i + 2], rgbValues[i + 1], rgbValues[i]);
-                colorArray[y, x] = new ColorInMemory(color, byteCount);
-                byteCount += 3;
+                Color color = Color.FromArgb(alphaChanel, rgbValues[i + 2], rgbValues[i + 1], rgbValues[i]);
+                colorArray[y, x] = new ColorInMemory(color, i);
+                byteCount += bytePerPixel;
                 x++;
                 if (byteCount == byteStringLenght)
                 {
@@ -83,10 +115,8 @@ namespace FastedBimap
             //Lock the bitmap's bits
             BitmapData imgData = imgBmp.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadOnly, imgBmp.PixelFormat);
             //Get the address in memory first bit
-            IntPtr ptr = imgData.Scan0;
-            int bytesLenght = Math.Abs(imgData.Stride) * Height;
-            byte[] rgbValues = new byte[3];
-            
+            IntPtr ptr = imgData.Scan0;            
+            byte[] rgbValues = new byte[3];            
             int byteCount = pixelsArray[y, x].positionInMemory;
             rgbValues[0] = color.B;
             rgbValues[1] = color.G;
@@ -107,6 +137,7 @@ namespace FastedBimap
         {
             return imgBmp;
         }
+
         public static explicit operator Bitmap (FastBitmap fastBitmap)
         {
             return fastBitmap.imgBmp;
