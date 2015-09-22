@@ -1,0 +1,1 @@
+<Playlist Version="1.0"><Add Test="speedTestOfBitmap.UnitTest1.originBitmapWriteTestBigImg" /><Add Test="speedTestOfBitmap.UnitTest1.fastBitmapWriteTest" /><Add Test="speedTestOfBitmap.UnitTest1.originBitmapWriteTest" /><Add Test="speedTestOfBitmap.UnitTest1.fastBitmapWriteTestBigImg" /></Playlist>
