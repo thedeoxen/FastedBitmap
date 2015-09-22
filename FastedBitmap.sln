@@ -7,10 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastedBitmap", "FastedBitma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "speedTestOfBitmap", "speedTestOfBitmap\speedTestOfBitmap.csproj", "{4C37C2CD-3A6C-4316-AC57-B718E5C0F450}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{79BBB514-57EB-4BE8-9ABA-B647A83BF093}"
-	ProjectSection(SolutionItems) = preProject
-		Performance1.psess = Performance1.psess
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "winFromFastBitmap", "winFromFastBitmap\winFromFastBitmap.csproj", "{A33735B3-B7F3-4F16-AEB0-19B464EF4EA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +23,10 @@ Global
 		{4C37C2CD-3A6C-4316-AC57-B718E5C0F450}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C37C2CD-3A6C-4316-AC57-B718E5C0F450}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C37C2CD-3A6C-4316-AC57-B718E5C0F450}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A33735B3-B7F3-4F16-AEB0-19B464EF4EA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A33735B3-B7F3-4F16-AEB0-19B464EF4EA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A33735B3-B7F3-4F16-AEB0-19B464EF4EA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A33735B3-B7F3-4F16-AEB0-19B464EF4EA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

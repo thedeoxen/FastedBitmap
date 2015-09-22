@@ -154,6 +154,27 @@ namespace speedTestOfBitmap
             Assert.IsTrue(bmp.GetPixel(0, 0).B == 0);
         }
 
+        [TestMethod]
+        public void fastBitmapPngRead()
+        {
+            FastBitmap img = new FastBitmap("../../image/3.png");
+            Color firstPixel = img.GetPixel(0,0);
+            Color middlePixel = img.GetPixel(300, 150);
+            Color preLastPixel = img.GetPixel(734, 735);
+            Color lastPixel = img.GetPixel(735, 735);
+            Assert.IsTrue(firstPixel == Color.FromArgb(0, 0, 0, 0));
+            Assert.IsTrue(middlePixel == Color.FromArgb(255, 254, 222, 88));
+            Assert.IsTrue(preLastPixel == Color.FromArgb(128, 0, 0, 255));
+            Assert.IsTrue(lastPixel.A==0);
+        }
+
+        public void fastBitmapPngWrite()
+        {
+            FastBitmap img = new FastBitmap("../../image/3.png");
+            img.SetPixel(5, 5, Color.FromArgb(50, 150, 150, 50));
+            Assert.IsTrue((img.ToBitmap().GetPixel(5, 5) == Color.FromArgb(50, 150, 150, 50)));
+        }
+
 
     }
 }
