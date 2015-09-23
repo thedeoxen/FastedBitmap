@@ -15,9 +15,9 @@ Comparison was made of image with a resolution small — 1024*768, big — 3840*
 ### Write ###
 ![performance comparison write.png](https://bitbucket.org/repo/KKMeMr/images/2880798216-performance%20comparison%20write.png)
 
-/*--------------------------------------------------------------------------------*/
 
-## Описание ## 
+
+## Описание ##
 FastedBitmap это библиотека, предназначенная для быстрой работы с Bitmap в C#.
 Класс FastBitmap представляет собой обертку над Bitmap, предоставляющая более быстрые методы getPixel и setPixel.
 
