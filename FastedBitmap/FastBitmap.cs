@@ -15,6 +15,7 @@ namespace FastedBimap
         public Bitmap imgBmp;
         private ColorInMemory[,] pixelsArray;
 
+        int bytePerPixel;
 
 
         public FastBitmap(Bitmap img)
@@ -41,6 +42,9 @@ namespace FastedBimap
         {
             PixelFormat pixelFormat = img.PixelFormat;
             int bytePerPixel;
+
+            PixelFormat pixelFormat = img.PixelFormat;
+            
 
             ColorInMemory[,] colorArray = new ColorInMemory[Height, Width];
 
@@ -89,7 +93,7 @@ namespace FastedBimap
                     alphaChanel = rgbValues[i + 3];
                 }
                 else
-                {
+            {
                     alphaChanel = 255;
                 }
                 
@@ -115,13 +119,24 @@ namespace FastedBimap
             //Lock the bitmap's bits
             BitmapData imgData = imgBmp.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadOnly, imgBmp.PixelFormat);
             //Get the address in memory first bit
-            IntPtr ptr = imgData.Scan0;            
-            byte[] rgbValues = new byte[3];            
+            IntPtr ptr = imgData.Scan0;
+
+            byte[] rgbValues = new byte[bytePerPixel];            
             int byteCount = pixelsArray[y, x].positionInMemory;
+            
+            
+                        
             rgbValues[0] = color.B;
             rgbValues[1] = color.G;
             rgbValues[2] = color.R;
-            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr+byteCount, 3);
+
+            if (bytePerPixel == 4)
+            {
+                rgbValues[3] = color.A;
+            }
+
+
+            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr+byteCount, bytePerPixel);
 
             imgBmp.UnlockBits(imgData);
             pixelsArray[y, x].color = color;

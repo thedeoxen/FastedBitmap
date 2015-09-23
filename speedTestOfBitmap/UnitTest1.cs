@@ -167,7 +167,7 @@ namespace speedTestOfBitmap
             Assert.IsTrue(preLastPixel == Color.FromArgb(128, 0, 0, 255));
             Assert.IsTrue(lastPixel.A==0);
         }
-
+        [TestMethod]
         public void fastBitmapPngWrite()
         {
             FastBitmap img = new FastBitmap("../../image/3.png");
