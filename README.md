@@ -18,7 +18,6 @@ Comparison was made of image with a resolution small — 1024/768, big — 3840/
 
 ## Simple ##
 
-
 ```
 #!c#
 
@@ -48,3 +47,17 @@ FastedBitmap это библиотека, предназначенная для 
 ![performance comparison read.png](https://bitbucket.org/repo/KKMeMr/images/388168527-performance%20comparison%20read.png)
 ### Запись ###
 ![performance comparison write.png](https://bitbucket.org/repo/KKMeMr/images/2880798216-performance%20comparison%20write.png)
+
+## Пример##
+
+```
+#!c#
+
+FastBitmap img = new FastBitmap("../../image/2.jpg");
+for (int y = 0; y < img.Height; y++)
+{
+     for (int x = 0; x < img.Width; x++)
+     {
+         img.SetPixel(x, y, Color.Red);
+     }
+}
