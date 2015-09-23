@@ -9,7 +9,7 @@ For use the library in your project, compiled it, and add reference to "FastedBi
 Supported formats jpg and png (if you need other format, you can contact me)
 
 ## Performance comparison ##
-Comparison was made of image with a resolution small — 1024*768, big — 3840*2400.
+Comparison was made of image with a resolution small — 1024-768, big — 3840-2400.
 ### Read ###
 ![performance comparison read.png](https://bitbucket.org/repo/KKMeMr/images/388168527-performance%20comparison%20read.png)
 ### Write ###
@@ -26,7 +26,7 @@ FastedBitmap это библиотека, предназначенная для 
 Поддерживаются форматы jpg и png(Если вам нужны другие форматы, вы можете связаться со мной)
 
 ## Сравнение производительности ##
-Сравнение производилось над изображениями с разрешением: маленькое изображение — 1024*768, большое — 3840*2400.
+Сравнение производилось над изображениями с разрешением: маленькое изображение — 1024-768, большое — 3840-2400.
 ### Чтение ###
 ![performance comparison read.png](https://bitbucket.org/repo/KKMeMr/images/388168527-performance%20comparison%20read.png)
 ### Запись ###
