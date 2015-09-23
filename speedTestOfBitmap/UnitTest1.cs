@@ -175,6 +175,14 @@ namespace speedTestOfBitmap
             Assert.IsTrue((img.ToBitmap().GetPixel(5, 5) == Color.FromArgb(50, 150, 150, 50)));
         }
 
-
+        [TestMethod]
+        public void fastBitmapEqualOriginBitmap()
+        {
+            Bitmap img = new Bitmap("../../image/1.jpg");
+            FastBitmap fastBitmap = new FastBitmap(img);
+            fastBitmap.SetPixel(0, 0, Color.Red);
+            Assert.AreEqual(img, fastBitmap.ToBitmap());
+            Assert.IsTrue(img.GetPixel(0, 0) == Color.FromArgb(255,255,0,0));
+        } 
     }
 }

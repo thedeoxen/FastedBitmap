@@ -32,7 +32,7 @@ namespace winFromFastBitmap
         {
             for (int y = 0; y < fastBmp.Height; y++)
             {
-                for (int x = 0; x < fastBmp.Width; x++)
+                for (int x = 0; x < fastBmp.Width/2; x++)
                 {
                     fastBmp.SetPixel(x, y, Color.Red);
                     

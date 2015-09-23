@@ -42,8 +42,6 @@ namespace FastedBimap
         {
             PixelFormat pixelFormat = img.PixelFormat;
             int bytePerPixel;
-
-            PixelFormat pixelFormat = img.PixelFormat;
             
 
             ColorInMemory[,] colorArray = new ColorInMemory[Height, Width];
