@@ -13,6 +13,9 @@ namespace FastedBimap
         public int Height { get; set; }
         public int Width { get; set; }
         public Bitmap imgBmp;
+
+        
+
         private ColorInMemory[,] pixelsArray;
 
         int bytePerPixel;
@@ -41,7 +44,7 @@ namespace FastedBimap
         private ColorInMemory[,] getPixelArrayFromBmp(Bitmap img)
         {
             PixelFormat pixelFormat = img.PixelFormat;
-            int bytePerPixel;
+            
             
 
             ColorInMemory[,] colorArray = new ColorInMemory[Height, Width];
@@ -155,7 +158,17 @@ namespace FastedBimap
         {
             return fastBitmap.imgBmp;
         }
-
+        
+        public void EditAllPixels(Func<Color, Color> p)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    SetPixel(x, y, p(pixelsArray[y, x].color));
+                }
+            }
+        }
 
         /// <summary>
         /// class for save color and position in byte

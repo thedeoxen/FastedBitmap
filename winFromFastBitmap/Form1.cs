@@ -21,7 +21,7 @@ namespace winFromFastBitmap
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (openFileDialog1.ShowDialog()==DialogResult.OK)
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 fastBmp = new FastBitmap(openFileDialog1.FileName);
                 pictureBox1.Image = fastBmp.ToBitmap();
@@ -30,15 +30,15 @@ namespace winFromFastBitmap
 
         private void button2_Click(object sender, EventArgs e)
         {
-            for (int y = 0; y < fastBmp.Height; y++)
-            {
-                for (int x = 0; x < fastBmp.Width/2; x++)
-                {
-                    fastBmp.SetPixel(x, y, Color.Red);
-                    
-                }
-            }
+            fastBmp.EditAllPixels(toGray);
             pictureBox1.Image = fastBmp.ToBitmap();
+        }
+
+        static Color toGray(Color color)
+        {
+            int middle = (color.R + color.G + color.B) / 3;
+
+            return Color.FromArgb(color.A, middle, middle, middle);
         }
     }
 }
