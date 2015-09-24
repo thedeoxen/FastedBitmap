@@ -14,11 +14,10 @@ namespace FastedBimap
         public int Width { get; set; }
         public Bitmap imgBmp;
 
-        
 
         private Color[,] pixelsArray;
-
         int bytePerPixel;
+        int correctStride;
 
 
         public FastBitmap(Bitmap img)
@@ -50,7 +49,7 @@ namespace FastedBimap
             Color[,] colorArray = new Color[Height, Width];
 
             switch (pixelFormat)
-            {                
+            {
                 case PixelFormat.Format24bppRgb:
                     {
                         bytePerPixel = 3;
@@ -63,7 +62,7 @@ namespace FastedBimap
                     }
                 default:
                     {
-                        throw new ApplicationException("Sorry, this pixelFormat don't support");                       
+                        throw new ApplicationException("Sorry, this pixelFormat don't support");
                     }
             }
 
@@ -78,7 +77,7 @@ namespace FastedBimap
             /*
                because stride rounds to 4 bit
             */
-            int correctStride = 0;
+            correctStride = 0;
             int byteStringLenght = Width * bytePerPixel;
             int byteCount = 0;
             if (imgData.Stride != Width * bytePerPixel)
@@ -89,15 +88,15 @@ namespace FastedBimap
             for (int i = 0; i <= bytesLenght - bytePerPixel; i += bytePerPixel)
             {
                 int alphaChanel;
-                if (bytePerPixel==4)
+                if (bytePerPixel == 4)
                 {
                     alphaChanel = rgbValues[i + 3];
                 }
                 else
-            {
+                {
                     alphaChanel = 255;
                 }
-                
+
 
                 Color color = Color.FromArgb(alphaChanel, rgbValues[i + 2], rgbValues[i + 1], rgbValues[i]);
                 colorArray[y, x] = color;
@@ -122,9 +121,8 @@ namespace FastedBimap
             //Get the address in memory first bit
             IntPtr ptr = imgData.Scan0;
 
-            byte[] rgbValues = new byte[bytePerPixel];          
-            
-                        
+            byte[] rgbValues = new byte[bytePerPixel];
+
             rgbValues[0] = color.B;
             rgbValues[1] = color.G;
             rgbValues[2] = color.R;
@@ -140,9 +138,66 @@ namespace FastedBimap
 
         }
 
+
         public Color GetPixel(int x, int y)
         {
             return pixelsArray[y, x];
+        }
+
+        public void EditAllPixels(Func<Color, Color> p)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    fakeSetPixel(x, y, p(pixelsArray[y, x]));
+                }
+            }
+            fixInBitmap();
+        }
+
+
+        /// <summary>
+        /// this method set value of pixel in pixel array, but this not write pixel in bitmap
+        /// for write in bitmap use fixInBitmap
+        /// </summary>
+        private void fakeSetPixel(int x, int y, Color color)
+        {
+            pixelsArray[y, x] = color;
+        }
+
+        /// <summary>
+        /// write pixel from pixels array to bitmap
+        /// </summary>
+        private void fixInBitmap()
+        {
+            //Lock the bitmap's bits
+            BitmapData imgData = imgBmp.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadOnly, imgBmp.PixelFormat);
+            //Get the address in memory first bit
+            IntPtr ptr = imgData.Scan0;
+
+            byte[] rgbValues = new byte[bytePerPixel];
+            int byteCount = 0;
+
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    Color color = pixelsArray[y, x];
+                    rgbValues[0] = color.B;
+                    rgbValues[1] = color.G;
+                    rgbValues[2] = color.R;
+
+                    if (bytePerPixel == 4)
+                    {
+                        rgbValues[3] = color.A;
+                    }
+                    System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr+byteCount, bytePerPixel);
+                    byteCount += bytePerPixel;
+                }
+                byteCount += correctStride;
+            }
+            imgBmp.UnlockBits(imgData);            
         }
 
         public Bitmap ToBitmap()
@@ -150,22 +205,11 @@ namespace FastedBimap
             return imgBmp;
         }
 
-        public static explicit operator Bitmap (FastBitmap fastBitmap)
+        public static explicit operator Bitmap(FastBitmap fastBitmap)
         {
             return fastBitmap.imgBmp;
         }
-        
-        public void EditAllPixels(Func<Color, Color> p)
-        {
-            for (int y = 0; y < Height; y++)
-            {
-                for (int x = 0; x < Width; x++)
-                {
-                    SetPixel(x, y, p(pixelsArray[y, x]));
-                }
-            }
-        }
 
-       
+
     }
 }

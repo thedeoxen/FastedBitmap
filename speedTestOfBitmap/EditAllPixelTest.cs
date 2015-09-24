@@ -13,7 +13,6 @@ namespace speedTestOfBitmap
         {
             FastBitmap img = new FastBitmap("../../image/1.jpg");
             img.EditAllPixels((color) => (Color.FromArgb(color.A, color.R, color.G, 0)));
-
         }
     }
 }
