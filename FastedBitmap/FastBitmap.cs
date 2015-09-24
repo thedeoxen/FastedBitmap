@@ -16,7 +16,7 @@ namespace FastedBimap
 
         
 
-        private ColorInMemory[,] pixelsArray;
+        private Color[,] pixelsArray;
 
         int bytePerPixel;
 
@@ -41,13 +41,13 @@ namespace FastedBimap
 
         }
 
-        private ColorInMemory[,] getPixelArrayFromBmp(Bitmap img)
+        private Color[,] getPixelArrayFromBmp(Bitmap img)
         {
             PixelFormat pixelFormat = img.PixelFormat;
-            
-            
 
-            ColorInMemory[,] colorArray = new ColorInMemory[Height, Width];
+
+
+            Color[,] colorArray = new Color[Height, Width];
 
             switch (pixelFormat)
             {                
@@ -100,7 +100,7 @@ namespace FastedBimap
                 
 
                 Color color = Color.FromArgb(alphaChanel, rgbValues[i + 2], rgbValues[i + 1], rgbValues[i]);
-                colorArray[y, x] = new ColorInMemory(color, i);
+                colorArray[y, x] = color;
                 byteCount += bytePerPixel;
                 x++;
                 if (byteCount == byteStringLenght)
@@ -118,13 +118,11 @@ namespace FastedBimap
         public void SetPixel(int x, int y, Color color)
         {
             //Lock the bitmap's bits
-            BitmapData imgData = imgBmp.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadOnly, imgBmp.PixelFormat);
+            BitmapData imgData = imgBmp.LockBits(new Rectangle(x, y, 1, 1), ImageLockMode.ReadOnly, imgBmp.PixelFormat);
             //Get the address in memory first bit
             IntPtr ptr = imgData.Scan0;
 
-            byte[] rgbValues = new byte[bytePerPixel];            
-            int byteCount = pixelsArray[y, x].positionInMemory;
-            
+            byte[] rgbValues = new byte[bytePerPixel];          
             
                         
             rgbValues[0] = color.B;
@@ -135,18 +133,16 @@ namespace FastedBimap
             {
                 rgbValues[3] = color.A;
             }
-
-
-            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr+byteCount, bytePerPixel);
+            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytePerPixel);
 
             imgBmp.UnlockBits(imgData);
-            pixelsArray[y, x].color = color;
+            pixelsArray[y, x] = color;
 
         }
 
         public Color GetPixel(int x, int y)
         {
-            return pixelsArray[y, x].color;
+            return pixelsArray[y, x];
         }
 
         public Bitmap ToBitmap()
@@ -165,23 +161,11 @@ namespace FastedBimap
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    SetPixel(x, y, p(pixelsArray[y, x].color));
+                    SetPixel(x, y, p(pixelsArray[y, x]));
                 }
             }
         }
 
-        /// <summary>
-        /// class for save color and position in byte
-        /// </summary>
-        private class ColorInMemory
-        {
-            public Color color;
-            public int positionInMemory;
-            public ColorInMemory(Color color, int position)
-            {
-                this.color = color;
-                this.positionInMemory = position;
-            }
-        }
+       
     }
 }
