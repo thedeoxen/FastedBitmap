@@ -137,20 +137,41 @@ namespace FastedBimap
             pixelsArray[y, x] = color;
 
         }
-
-
+        
         public Color GetPixel(int x, int y)
         {
             return pixelsArray[y, x];
         }
 
-        public void EditAllPixels(Func<Color, Color> p)
+
+        /// <summary>
+        /// method makes changes of all pixels, uses method, where input and output parameters is a Color
+        /// </summary>
+        /// <param name="method"></param>
+        public void EditAllPixels(Func<Color, Color> method)
         {
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    fakeSetPixel(x, y, p(pixelsArray[y, x]));
+                    fakeSetPixel(x, y, method(pixelsArray[y, x]));
+                }
+            }
+            fixInBitmap();
+        }
+
+        /// <summary>
+        /// method makes changes of all pixels, uses method, where input parameters is a Color and any other type(for example other Color for comparison), and output parameters is a Color
+        /// </summary>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        public void EditAllPixels(Func<Color, Object, Color> method, Object arg1)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    fakeSetPixel(x, y, method(pixelsArray[y, x], arg1));
                 }
             }
             fixInBitmap();
